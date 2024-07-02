@@ -21,4 +21,4 @@ function checkPalindrom (string) { //создаем функцию с парам
       return false; //не палиндром.
       }
   };
-  checkPalindrom('Лёша на полке клопа нашёл ');
+  checkPalindrom('Лёша на полке клопа нашёл');
