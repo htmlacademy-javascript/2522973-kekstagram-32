@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 //Функция для проверки длины строки.
 function checkLength (str, length) {
   if (str.length <= length) {
@@ -17,33 +16,10 @@ function checkPalindrom (string) { //создаем функцию с парам
     newString += normalString[i]; //получаем и записываем символ с конца строки normalString в начало строки newString
   }
   if (newString === normalString) { //проверка на строгое равенство
-    return true; //является палиндромом
+    return true; // является палиндромом
   } else {
     return false; //не палиндром.
   }
 }
 checkPalindrom('Лёша на полке клопа нашёл');
-=======
-// 1. Функция для проверки длины строки.
-function checkLength (str, length) {
-  if (str.length <= length) {
-   console.log(true);
-   } else {
-     console.log(false);
-   }
-  }
- checkLength ('Привет, Денис!!!', 50);
- // 2.  Функция для проверки, является ли строка палиндромом.
- function checkPalindrom (string) {
- const normalString = string.toLocaleLowerCase().replaceAll(' ', '');
-  for (let i = normalString.length - 1; i >= 0; i--) {
-  newString += normalString[i];
-  }
-  if (newString === normalString) {
-      console.log('Ура, ' + string + ' является палиндромом!!!');
-      } else {
-          console.log(string + 'не палиндром. Попробуйте ещё.');
-      }
-  }
-  checkPalindrom('т опоТ ');
->>>>>>> cca0f6396f0cc0d91823f12ed2792068f7f60955
+
