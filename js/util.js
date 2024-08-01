@@ -10,10 +10,7 @@ const getRandomArrayElement = (items) =>
 
 const createIdGenerator = () => {
   let numberId = 1;
-  return () => {
-    numberId += 1;
-    return numberId;
-  };
+  return () => numberId++;
 };
 
 
