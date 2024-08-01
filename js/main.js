@@ -1,3 +1,6 @@
-import './setup.js';
-// eslint-disable-next-line no-unused-vars
-import {userPhoto} from './setup.js';
+import {getPictures} from './data.js';
+import {generateThumbnails} from './thumbnail.js';
+
+generateThumbnails(getPictures());
+//console.log(getPictures());
+
