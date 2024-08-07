@@ -1,4 +1,4 @@
-import { generateThumbnails } from './thumbnail';
+import { generateThumbnails } from './thumbnail'; //Импорт модулей
 import { showBigPicture } from './big-photo.js';
 
 const container = document.querySelector('.pictures');
