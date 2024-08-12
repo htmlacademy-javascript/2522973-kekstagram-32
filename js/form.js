@@ -1,102 +1,99 @@
-const MAX_HASHTAG_COUNT = 5;
-const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
-const ErrorText = {
-  INVALID_COUNT: `Максимум ${MAX_HASHTAG_COUNT} хештегов`,
-  NOT_UNIQUE: 'Хештеги должны быть уникальными',
-  INVALID_PATTERN: 'Неправильный хештег',
-};
+import {isEscapeKey} from './util.js';
+import {resetScale} from './scale.js';
+import {resetEffects} from './effect.js';
 
-const body = document.querySelector('body');
 const form = document.querySelector('.img-upload__form');
-const overlay = form.querySelector('.img-upload__overlay');
-const cancelButton = form.querySelector('.img-upload__cancel');
-const fileField = form.querySelector('.img-upload__input');
+const fileField = document.querySelector('#upload-file');
+const formUpload = document.querySelector('.img-upload__overlay');
+const bodyElement = document.querySelector('body');
+const cancelButton = document.querySelector('#upload-cancel');
 const hashtagField = form.querySelector('.text__hashtags');
 const commentField = form.querySelector('.text__description');
 
+const MAX_COMMENT_LENGTH = 140;
+const MAX_HASHTAG_COUNT = 5;
+const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
+const hashtagErrors = {
+  UNVALID_HASHTAG: 'Неправильный хэштег',
+  UNVALID_COUNT: `Максимум ${MAX_HASHTAG_COUNT} хештегов`,
+  NOT_UNIQUE: 'Хэштеги не должны повторяться',
+};
+const commentErorr = 'Максимальная длина комментария 140 символов';
+
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
-  errorTextParent:'img-upload__field-wrapper',
+  errorTextParent: 'img-upload__field-wrapper',
   errorTextClass: 'img-upload__field-wrapper__error',
 });
 
-const showModal = () => {
-  overlay.classList.remove('hidden');
-  body.classList.add('modal-open');
-  document.addEventListener('keydown', onDocumentKeydown);
+const showFormModal = () => {
+  formUpload.classList.remove('hidden');
+  bodyElement.classList.add('modal-open');
+  document.addEventListener('keydown', onEscKeyDown);
 };
 
-const hideModal = () => {
+const hideFormModal = () => {
   form.reset();
+  resetScale();
+  resetEffects();
   pristine.reset();
-  overlay.classList.remove('modal-open');
-  document.removeEventListener('keydown', onDocumentKeydown);
+  formUpload.classList.add('hidden');
+  bodyElement.classList.remove('modal-open');
+  document.removeEventListener('keydown', onEscKeyDown);
 };
 
-const isTextFieldFocused = () =>
-  document.activeElement === hashtagField ||
-  document.activeElement === commentField;
-
-const normalizeTags = (tagString) => tagString
-  .trim()
-  .split(' ')
-  .filter((tag) => Boolean(tag.length));
-
-const hasValidTags = (value) => normalizeTags(value).every((tag) => VALID_SYMBOLS.test(tag));
-
-const hasValidCount = (value) => normalizeTags(value).length <= MAX_HASHTAG_COUNT;
-
-const hasUniqueTags = (value) => {
-  const lowerCaseTags = normalizeTags(value).map((tag) => tag.toLowerCase());
-  return lowerCaseTags.length === new Set(lowerCaseTags).size;
-};
-
-function onDocumentKeydown(evt) {
-  if (evt.key === 'Escape' && !isTextFieldFocused()) {
+function onEscKeyDown (evt) {
+  if(isEscapeKey(evt)) {
     evt.preventDefault();
-    hideModal();
+    hideFormModal();
   }
 }
 
-const onCancelButtonClick = () => {
-  hideModal();
+function onInputKeydownEscape (evt) {
+  if (evt.key === 'Escape') {
+    evt.stopPropagation();
+  }
+}
+
+const onNewFileUpload = () => {
+  showFormModal();
 };
 
-
-const onFileInputChange = () => {
-  showModal();
+const onCancelButtonClick = () => {
+  hideFormModal();
 };
 
 const onFormSubmit = (evt) => {
-  evt.preventDefault();
-  pristine.validate();
+  if (!pristine.validate()) {
+    evt.preventDefault();
+  }
 };
 
-pristine.addValidator(
-  hashtagField,
-  hasValidCount,
-  ErrorText.INVALID_COUNT,
-  3,
-  true
-);
+const prepareHashtags = (inputTag) => inputTag.trim().split(' ').filter((tag) => tag.length > 0);
 
-pristine.addValidator(
-  hashtagField,
-  hasUniqueTags,
-  ErrorText.NOT_UNIQUE,
-  2,
-  true
-);
+const isHashtagsValid = (value) => prepareHashtags(value).every((tag) => VALID_SYMBOLS.test(tag));
 
+const isHashtagsCount = (value) => prepareHashtags(value).length <= MAX_HASHTAG_COUNT;
 
-pristine.addValidator(
-  hashtagField,
-  hasValidTags,
-  ErrorText.INVALID_PATTERN,
-  1,
-  true
-);
+const isHashtagUnique = (value) => {
+  const lowerCaseTags = prepareHashtags(value).map((tag) => tag.toLowerCase());
+  return lowerCaseTags.length === new Set(lowerCaseTags).size;
+};
 
-fileField.addEventListener('change', onFileInputChange);
+const isCommentLengthValid = (inputComment) => inputComment.length <= MAX_COMMENT_LENGTH;
+
+pristine.addValidator(hashtagField, isHashtagsCount, hashtagErrors.UNVALID_COUNT, 3, true);
+
+pristine.addValidator(hashtagField, isHashtagUnique, hashtagErrors.NOT_UNIQUE, 2, true);
+
+pristine.addValidator(hashtagField, isHashtagsValid, hashtagErrors.UNVALID_HASHTAG, 1, true);
+
+pristine.addValidator(commentField, isCommentLengthValid, commentErorr);
+
+hashtagField.addEventListener('keydown', onInputKeydownEscape);
+commentField.addEventListener('keydown', onInputKeydownEscape);
+
+fileField.addEventListener('change', onNewFileUpload);
 cancelButton.addEventListener('click', onCancelButtonClick);
 form.addEventListener('submit', onFormSubmit);
+
