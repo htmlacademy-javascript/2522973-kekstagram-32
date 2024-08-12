@@ -12,10 +12,11 @@ const createIdGenerator = () => {
   let numberId = 1;
   return () => numberId++;
 };
-
+const isEscapeKey = (evt) => evt.key === 'Escape';
 
 export {
   getRandomInteger,
   getRandomArrayElement,
   createIdGenerator,
+  isEscapeKey
 };
