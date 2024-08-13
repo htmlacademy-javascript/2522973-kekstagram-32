@@ -1,8 +1,9 @@
 import {isEscapeKey} from './util.js';
-import {resetScale} from './scale.js';
+import { resetScale } from './scale.js';
 import {resetEffects} from './effect.js';
 import {sendData} from './api.js';
 import {showErrorMessage, showSuccessMessage} from './message.js';
+//import { preview } from 'vite';
 
 const form = document.querySelector('.img-upload__form');
 const fileField = document.querySelector('#upload-file');
@@ -12,10 +13,13 @@ const cancelButton = document.querySelector('#upload-cancel');
 const hashtagField = form.querySelector('.text__hashtags');
 const commentField = form.querySelector('.text__description');
 const buttonSubmit = document.querySelector('.img-upload__submit');
+const photoPreview = form.querySelector('.img-upload__preview img');
+const effectsPreviews = form.querySelector('.effects__preview');
 
 const MAX_COMMENT_LENGTH = 140;
 const MAX_HASHTAG_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const hashtagErrors = {
   UNVALID_HASHTAG: 'Неправильный хэштег',
   UNVALID_COUNT: `Максимум ${MAX_HASHTAG_COUNT} хештегов`,
@@ -34,7 +38,7 @@ const pristine = new Pristine(form, {
   errorTextClass: 'img-upload__field-wrapper__error',
 });
 
-const showFormModal = () => {
+const showModal = () => {
   formUpload.classList.remove('hidden');
   bodyElement.classList.add('modal-open');
   document.addEventListener('keydown', onEscKeyDown);
@@ -57,14 +61,29 @@ function onEscKeyDown (evt) {
   }
 }
 
+//const isErrorMessageShown = () => Boolean(document.querySelector('.error'));
+
+const isValidType = (file) => {
+  const fileName = file.name.toLowerCase();
+  return FILE_TYPES.some((it) => fileName.endsWith(it));
+};
+
 function onInputKeydownEscape (evt) {
   if (isEscapeKey(evt)) {
     evt.stopPropagation();
   }
 }
 
-const onNewFileUpload = () => {
-  showFormModal();
+const onFileInputChange = () => {
+  const file = fileField.files[0];
+
+  if (file && isValidType(file)) {
+    photoPreview.src = URL.createObjectURL(file);
+    effectsPreviews.forEach((preview) => {
+      preview.style.backgroundImage = `url('${photoPreview.src}')`;
+    });
+  }
+  showModal();
 };
 
 const onCancelButtonClick = () => {
@@ -124,7 +143,7 @@ pristine.addValidator(commentField, isCommentLengthValid, commentErorr);
 hashtagField.addEventListener('keydown', onInputKeydownEscape);
 commentField.addEventListener('keydown', onInputKeydownEscape);
 
-fileField.addEventListener('change', onNewFileUpload);
+fileField.addEventListener('change', onFileInputChange);
 cancelButton.addEventListener('click', onCancelButtonClick);
 
 export {setUserFormSubmit, hideFormModal, successHandler};
