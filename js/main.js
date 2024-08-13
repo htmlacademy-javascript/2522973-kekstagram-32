@@ -3,7 +3,7 @@ import { showAlert, debounce } from './util.js';
 import { setUserFormSubmit, hideFormModal } from './form.js';
 import { getData, sendData } from './api.js';
 import { showSuccessMessage, showErrorMessage } from './message.js';
-import { init as initFilter, getFilteredPictures } from './filter.js';
+import { initial as initFilter, getFilteredPictures } from './filter.js';
 
 setUserFormSubmit(async (data) => {
   try {

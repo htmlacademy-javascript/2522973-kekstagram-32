@@ -11,8 +11,7 @@ let pictures = [];
 
 const sortRandomly = () => Math.random() - 0.5;
 
-const sortByComments = (pictureA, pictureB) =>
-  pictureB.comments.length - pictureA.comments.length;
+const sortByComments = (a,b) => b.comments.length - a.comments.length;
 
 const getFilteredPictures = () => {
   switch (currentFilter) {
@@ -36,19 +35,30 @@ const SetOnFilterClick = (callback) => {
       return;
     }
 
-    filterElement
-      .querySelector('.img-filters__button--active')
-      .classList.remove('img-filters__button--active');
+    filterElement.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
     clickedButton.classList.add('img-filters__button--active');
     currentFilter = clickedButton.id;
     callback(getFilteredPictures());
   });
 };
 
-const init = (loadedPictures, callback) => {
+const initial = (loadedPctrs, callback) => {
   filterElement.classList.remove('img-filters--inactive');
-  pictures = [...loadedPictures];
+  pictures = [...loadedPctrs];
   SetOnFilterClick(callback);
 };
 
-export {init, getFilteredPictures};
+function debounce (callback, timeoutDelay = 500) {
+
+  let timeoutId;
+
+  return (...rest) => {
+
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+
+  };
+}
+
+export {initial, getFilteredPictures, debounce};
