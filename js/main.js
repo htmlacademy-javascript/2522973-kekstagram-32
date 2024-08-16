@@ -5,7 +5,7 @@ import { getData, sendData } from './api.js';
 import { showSuccessMessage, showErrorMessage } from './message.js';
 import { initial as initFilter, getFilteredPictures } from './filter.js';
 
-setUserFormSubmit(async (data) => {
+setUserFormSubmit(async(data) => {
   try {
     await sendData(data);
     hideFormModal();

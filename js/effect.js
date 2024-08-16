@@ -1,7 +1,7 @@
 const sliderElement = document.querySelector('.effect-level__slider');
 const effectsListElement = document.querySelector('.effects__list');
 const sliderContainerElement = document.querySelector('.img-upload__effect-level');
-const sliderElementValue = document.querySelector('.effect-level__value');
+const effectLevelElement = document.querySelector('.effect-level__value');
 const photoElement = document.querySelector('.img-upload__preview img');
 
 const EFFECTS = {
@@ -92,11 +92,11 @@ const onSliderUpdate = () => {
   }
   currentSliderValue = sliderElement.noUiSlider.get();
   setEffect();
-  sliderElementValue.value = currentSliderValue;
+  effectLevelElement.value = currentSliderValue;
 };
 
 createSlider({min: FILTERS[EFFECTS.DEFAULT].min, max: FILTERS[EFFECTS.DEFAULT].max, step: FILTERS[EFFECTS.DEFAULT].step});
-sliderElementValue.value = '';
+effectLevelElement.value = '';
 setEffect();
 sliderElement.noUiSlider.on('update', onSliderUpdate);
 
@@ -121,7 +121,7 @@ effectsListElement.addEventListener('click', (evt) => {
 
 const resetEffects = () => {
   chosenEffect = EFFECTS.DEFAULT;
-  sliderElementValue.value = '';
+  effectLevelElement.value = '';
   currentSliderValue = FILTERS[EFFECTS.DEFAULT].max;
   setEffect();
 };

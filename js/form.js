@@ -1,9 +1,8 @@
 import {isEscapeKey} from './util.js';
 import { resetScale } from './scale.js';
 import {resetEffects} from './effect.js';
-import {sendData} from './api.js';
-import {showErrorMessage, showSuccessMessage} from './message.js';
-//import { preview } from 'vite';
+import {showSuccessMessage} from './message.js';
+
 
 const form = document.querySelector('.img-upload__form');
 const fileField = document.querySelector('#upload-file');
@@ -14,12 +13,12 @@ const hashtagField = form.querySelector('.text__hashtags');
 const commentField = form.querySelector('.text__description');
 const buttonSubmit = document.querySelector('.img-upload__submit');
 const photoPreview = form.querySelector('.img-upload__preview img');
-const effectsPreviews = form.querySelector('.effects__preview');
+const effectsPreviews = form.querySelectorAll('.effects__preview');
 
 const MAX_COMMENT_LENGTH = 140;
 const MAX_HASHTAG_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
-const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+const fileType = ['jpg', 'jpeg', 'png'];
 const hashtagErrors = {
   UNVALID_HASHTAG: 'Неправильный хэштег',
   UNVALID_COUNT: `Максимум ${MAX_HASHTAG_COUNT} хештегов`,
@@ -65,7 +64,7 @@ function onEscKeyDown (evt) {
 
 const isValidType = (file) => {
   const fileName = file.name.toLowerCase();
-  return FILE_TYPES.some((it) => fileName.endsWith(it));
+  return fileType.some((it) => fileName.endsWith(it));
 };
 
 function onInputKeydownEscape (evt) {
@@ -89,27 +88,21 @@ const onFileInputChange = () => {
 const onCancelButtonClick = () => {
   hideFormModal();
 };
-const blockButtonSubmit = () => {
-  buttonSubmit.disabled = true;
-  buttonSubmit.textContent = buttonSubmitText.SENDING;
+const togleSubmitButton = (isDisabled) => {
+  buttonSubmit.disabled = isDisabled;
+  buttonSubmit.textContent = isDisabled
+    ? buttonSubmitText.SUBMITTING
+    : buttonSubmitText.IDLE;
 };
 
-const unblockButtonSubmit = () => {
-  buttonSubmit.disabled = false;
-  buttonSubmit.textContent = buttonSubmitText.IDLE;
-};
-
-const setUserFormSubmit = async (onSuccess) => {
-  form.addEventListener('submit', async (evt) => {
+const setUserFormSubmit = (callback) => {
+  form.addEventListener('submit', async(evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
     if (isValid) {
-      blockButtonSubmit();
-
-      await sendData(new FormData(evt.target))
-        .then(onSuccess)
-        .catch(showErrorMessage)
-        .finally(unblockButtonSubmit);
+      togleSubmitButton(true);
+      await callback(new FormData(form));
+      togleSubmitButton();
     }
   });
 };
