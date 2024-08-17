@@ -1,3 +1,4 @@
+import { useDebounce } from './util.js';
 const PICTURES_COUNT = 10;
 const Filter = {
   DEFAULT: 'filter-default',
@@ -24,7 +25,7 @@ const getFilteredPictures = () => {
   }
 };
 
-const SetOnFilterClick = (callback) => {
+const clickOnFilterSet = (callback) => {
   filterElement.addEventListener('click', (evt) => {
     if (!evt.target.classList.contains('img-filters__button')) {
       return;
@@ -42,23 +43,12 @@ const SetOnFilterClick = (callback) => {
   });
 };
 
-const initial = (loadedPctrs, callback) => {
+const useFilters = (loadedPctrs, callback) => {
   filterElement.classList.remove('img-filters--inactive');
   pictures = [...loadedPctrs];
-  SetOnFilterClick(callback);
+  clickOnFilterSet(callback);
 };
 
-function debounce (callback, timeoutDelay = 500) {
+useDebounce();
 
-  let timeoutId;
-
-  return (...rest) => {
-
-    clearTimeout(timeoutId);
-
-    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
-
-  };
-}
-
-export {initial, getFilteredPictures, debounce};
+export {useFilters, getFilteredPictures};

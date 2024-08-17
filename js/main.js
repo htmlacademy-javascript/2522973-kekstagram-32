@@ -1,11 +1,11 @@
 import { renderPhotos } from './photos.js';
-import { showAlert, debounce } from './util.js';
+import { showAlert, useDebounce } from './util.js';
 import { setUserFormSubmit, hideFormModal } from './form.js';
 import { getData, sendData } from './api.js';
 import { showSuccessMessage, showErrorMessage } from './message.js';
-import { initial as initFilter, getFilteredPictures } from './filter.js';
+import { useFilters as initFilter, getFilteredPictures } from './filter.js';
 
-setUserFormSubmit(async (data) => {
+setUserFormSubmit(async(data) => {
   try {
     await sendData(data);
     hideFormModal();
@@ -17,8 +17,8 @@ setUserFormSubmit(async (data) => {
 
 try {
   const data = await getData();
-  const debounceRenderGallery = debounce(renderPhotos);
-  initFilter(data, debounceRenderGallery);
+  const useDebounceRenderGallery = useDebounce(renderPhotos);
+  initFilter(data, useDebounceRenderGallery);
   renderPhotos(getFilteredPictures());
 } catch {
   showAlert();

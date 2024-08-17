@@ -14,13 +14,13 @@ const scaleImage = (value) => {
   scaleInputElement.value = `${value}%`;
 };
 
-const onSmallerButtonClick = () => {
+const clickOnSmallerButton = () => {
   scaleImage(
     Math.max(parseInt(scaleInputElement.value, 10) - SCALE_STEP, MIN_SCALE)
   );
 };
 
-const onBiggerButtonClick = () => {
+const clickOnBiggerButton = () => {
   scaleImage(
     Math.min(parseInt(scaleInputElement.value, 10) + SCALE_STEP, MAX_SCALE)
   );
@@ -28,7 +28,7 @@ const onBiggerButtonClick = () => {
 
 const resetScale = () => scaleImage(DEFAULT_SCALE);
 
-smallerButtonElement.addEventListener('click', onSmallerButtonClick);
-biggerButtonElement.addEventListener('click', onBiggerButtonClick);
+smallerButtonElement.addEventListener('click', clickOnSmallerButton);
+biggerButtonElement.addEventListener('click', clickOnBiggerButton);
 
 export { resetScale };

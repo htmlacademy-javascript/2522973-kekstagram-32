@@ -1,13 +1,10 @@
 const COMMENTS_PER_PORTION = 5;
-
+const bodyElement = document.querySelector('body');
 const bigPhotoElem = document.querySelector('.big-picture');
 const commentShownCountElement = bigPhotoElem.querySelector('.social__comment-shown-count');
 const commentTotalCountElement = bigPhotoElem.querySelector('.social__comment-total-count');
-
 const commentListElement = bigPhotoElem.querySelector('.social__comments');
 const commentsLoaderElement = bigPhotoElem.querySelector('.comments-loader');
-const bodyElement = document.querySelector('body');
-
 const cancelButtonElement = bigPhotoElem.querySelector('.big-picture__cancel');
 const commentElement = document.querySelector('#comment').content.querySelector('.social__comment');
 
@@ -58,11 +55,11 @@ function onDocumentKeydown(evt) {
   }
 }
 
-const onCancelButtonClick = () => {
+const clickOnCancelButton = () => {
   hideBigPicture();
 };
 
-const onCommentsLoaderClick = () => renderComments();
+const clickOnCommentsLoader = () => renderComments();
 
 const renderPictureDetails = ({ url, likes, description }) => {
   bigPhotoElem.querySelector('.big-picture__img img').src = url;
@@ -83,7 +80,7 @@ const showBigPicture = (data) => {
   }
 };
 
-cancelButtonElement.addEventListener('click', onCancelButtonClick);
-commentsLoaderElement.addEventListener('click', onCommentsLoaderClick);
+cancelButtonElement.addEventListener('click', clickOnCancelButton);
+commentsLoaderElement.addEventListener('click', clickOnCommentsLoader);
 
 export { showBigPicture };
