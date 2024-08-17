@@ -14,7 +14,7 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-const debounce = (callback, timeoutDelay = 500) => {
+const useDebounce = (callback, timeoutDelay = 500) => {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);
@@ -22,7 +22,7 @@ const debounce = (callback, timeoutDelay = 500) => {
   };
 };
 export {
-  debounce,
+  useDebounce,
   isEscapeKey,
   showAlert,
 };

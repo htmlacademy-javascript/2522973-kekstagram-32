@@ -55,11 +55,11 @@ function onDocumentKeydown(evt) {
   }
 }
 
-const onCancelButtonClick = () => {
+const clickOnCancelButton = () => {
   hideBigPicture();
 };
 
-const onCommentsLoaderClick = () => renderComments();
+const clickOnCommentsLoader = () => renderComments();
 
 const renderPictureDetails = ({ url, likes, description }) => {
   bigPhotoElem.querySelector('.big-picture__img img').src = url;
@@ -80,7 +80,7 @@ const showBigPicture = (data) => {
   }
 };
 
-cancelButtonElement.addEventListener('click', onCancelButtonClick);
-commentsLoaderElement.addEventListener('click', onCommentsLoaderClick);
+cancelButtonElement.addEventListener('click', clickOnCancelButton);
+commentsLoaderElement.addEventListener('click', clickOnCommentsLoader);
 
 export { showBigPicture };

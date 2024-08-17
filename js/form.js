@@ -73,7 +73,7 @@ function onInputKeydownEscape (evt) {
   }
 }
 
-const onFileInputChange = () => {
+const changeFileInput = () => {
   const file = fileField.files[0];
 
   if (file && isValidType(file)) {
@@ -85,7 +85,7 @@ const onFileInputChange = () => {
   showModal();
 };
 
-const onCancelButtonClick = () => {
+const clickOnCancelButton = () => {
   hideFormModal();
 };
 const togleSubmitButton = (isDisabled) => {
@@ -136,8 +136,8 @@ pristine.addValidator(commentField, isCommentLengthValid, commentErorr);
 hashtagField.addEventListener('keydown', onInputKeydownEscape);
 commentField.addEventListener('keydown', onInputKeydownEscape);
 
-fileField.addEventListener('change', onFileInputChange);
-cancelButton.addEventListener('click', onCancelButtonClick);
+fileField.addEventListener('change', changeFileInput);
+cancelButton.addEventListener('click', clickOnCancelButton);
 
 export {setUserFormSubmit, hideFormModal, successHandler};
 
