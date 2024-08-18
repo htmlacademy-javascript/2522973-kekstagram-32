@@ -27,7 +27,6 @@ function onDeleteMessage() {
   body.removeEventListener('keydown', onEscKeyDown);
   body.removeEventListener('click', onBodyClick);
 }
-
 function onBodyClick(evt) {
   if (
     evt.target.closest('.success__inner') ||
