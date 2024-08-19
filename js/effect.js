@@ -86,7 +86,7 @@ const setEffect = () => {
   }
 };
 
-const updateSlider = () => {
+const onUpdateSlider = () => {
   if (chosenEffect === EFFECTS.DEFAULT) {
     return;
   }
@@ -98,7 +98,7 @@ const updateSlider = () => {
 createSlider({min: FILTERS[EFFECTS.DEFAULT].min, max: FILTERS[EFFECTS.DEFAULT].max, step: FILTERS[EFFECTS.DEFAULT].step});
 effectLevelElement.value = '';
 setEffect();
-sliderElement.noUiSlider.on('update', updateSlider);
+sliderElement.noUiSlider.on('update', onUpdateSlider);
 
 effectsListElement.addEventListener('click', (evt) => {
   const effectsItemElement = evt.target.closest('.effects__radio');

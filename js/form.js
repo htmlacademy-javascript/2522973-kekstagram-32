@@ -1,5 +1,5 @@
 import {isEscapeKey} from './util.js';
-import { resetScale } from './scale.js';
+import {resetScale} from './scale.js';
 import {resetEffects} from './effect.js';
 import {showSuccessMessage} from './message.js';
 
@@ -60,8 +60,6 @@ function onEscKeyDown (evt) {
   }
 }
 
-//const isErrorMessageShown = () => Boolean(document.querySelector('.error'));
-
 const isValidType = (file) => {
   const fileName = file.name.toLowerCase();
   return fileType.some((it) => fileName.endsWith(it));
@@ -73,7 +71,7 @@ function onInputKeydownEscape (evt) {
   }
 }
 
-const changeFileInput = () => {
+const onFileInputChange = () => {
   const file = fileField.files[0];
 
   if (file && isValidType(file)) {
@@ -85,7 +83,7 @@ const changeFileInput = () => {
   showModal();
 };
 
-const clickOnCancelButton = () => {
+const onCancelButtonClick = () => {
   hideFormModal();
 };
 const togleSubmitButton = (isDisabled) => {
@@ -107,7 +105,7 @@ const setUserFormSubmit = (callback) => {
   });
 };
 
-const successHandler = () => {
+const showSuccessHandler = () => {
   hideFormModal();
   showSuccessMessage();
 };
@@ -136,9 +134,9 @@ pristine.addValidator(commentField, isCommentLengthValid, commentErorr);
 hashtagField.addEventListener('keydown', onInputKeydownEscape);
 commentField.addEventListener('keydown', onInputKeydownEscape);
 
-fileField.addEventListener('change', changeFileInput);
-cancelButton.addEventListener('click', clickOnCancelButton);
+fileField.addEventListener('change', onFileInputChange);
+cancelButton.addEventListener('click', onCancelButtonClick);
 
-export {setUserFormSubmit, hideFormModal, successHandler};
+export {setUserFormSubmit, hideFormModal, showSuccessHandler};
 
 
